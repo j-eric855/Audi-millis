@@ -1,14 +1,14 @@
 /*
    Funktion:        LEDs sollen im Laufmuster aufleuchten
    Programierer:    Eric Junker
-   letzte Änderung: 22.09.2020
-   Version:         1.0
+   letzte Änderung: 03.11.2020
+   Version:         1.5
    Hardware:        Pin 2-5 rote LEDs im Laufmuster
                     Pin 6-9 grüne LEDs im Laufmzuster
 */
 #include <OneButton.h>
 unsigned long letzteZeit = 0;
-unsigned long warteZeit = 90;
+unsigned long warteZeit = 150;
 byte zaehler = 0;
 byte led[8] = {2, 3, 4, 5, 6, 7, 8, 9};
 
@@ -17,7 +17,7 @@ bool merkerPower = false;
 
 void setup()
 {
-  
+
   for (byte i = 0; i < 8; i++)
   {
     pinMode(led[i], OUTPUT);                        //Pinbelegung 2-9 Output
@@ -37,14 +37,17 @@ void loop()
 
     if ((aktuelleZeit - letzteZeit) > warteZeit)      //Zeitabfrage warte Zeit zwischen den durchgängen
     {
-      digitalWrite( led[zaehler], LOW);               //vorherriger Pin wird ausgeschaltet
-      zaehler ++;
-      if (zaehler == 8)                               //nach 7 wechseln ist der durchgang vorbei und wird neu gestartet
+      
       {
-        zaehler = 0;
-      }
-      digitalWrite( led[zaehler], HIGH);              //nächster Pin wird eingeschaltet
-      letzteZeit = aktuelleZeit;                      //Zeit wird neu gesetzt
+        digitalWrite( led[zaehler], LOW);               //vorherriger Pin wird ausgeschaltet
+        zaehler ++;
+        if (zaehler == 8)                               //nach 7 wechseln ist der durchgang vorbei und wird neu gestartet
+        {
+          zaehler = 0;
+        }
+        digitalWrite( led[zaehler], HIGH);              //nächster Pin wird eingeschaltet
+        letzteZeit = aktuelleZeit;                      //Zeit wird neu gesetzt
+      }                                                 
     }
 
   }
@@ -53,6 +56,7 @@ void loop()
     for (int i = 0; i < 8; i++)
     {
       digitalWrite(led[i], LOW);
+      zaehler = 7;
     }
   }
 }
