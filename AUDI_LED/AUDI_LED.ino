@@ -7,8 +7,8 @@
                     Pin 6-9 grüne LEDs im Laufmzuster
 */
 #include <OneButton.h>
-unsigned long zeitVorher = 0;
-unsigned long warteZeit = 1000;
+unsigned long letzteZeit = 0;
+unsigned long warteZeit = 90;
 byte zaehler = 0;
 byte led[8] = {2, 3, 4, 5, 6, 7, 8, 9};
 
@@ -28,30 +28,35 @@ void setup()
 
 void loop()
 {
-  
+
   taster.tick();
   delay(10);
   Serial.println(merkerPower);
   if  (merkerPower == true)
   {
-    unsigned long zeitJetzt = millis();
-    if ((zeitJetzt - zeitVorher) > warteZeit)
+
+    if ((millis() - letzteZeit) > warteZeit)
     {
       digitalWrite( led[zaehler], LOW);
-      digitalWrite( led[zaehler +1], HIGH);
       zaehler ++;
+      if (zaehler == 8)
+      {
+        zaehler = 0;
+      }
+      digitalWrite( led[zaehler], HIGH);
+      letzteZeit = millis();
     }
-    
-    if (zaehler == 8)
-    {
-      zaehler = 0;
-    }
-    zeitVorher = zeitJetzt;
+
   }
-
-
-
+  else
+  {
+    for (int i = 0; i < 8; i++)
+    {
+      digitalWrite(led[i], LOW);
+    }
+  }
 }
+
 
 void Taster_Funktion()
 {
