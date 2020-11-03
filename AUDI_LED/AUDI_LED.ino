@@ -28,14 +28,14 @@ void setup()
 
 void loop()
 {
-
   taster.tick();
   delay(10);
   Serial.println(merkerPower);
+  unsigned long aktuelleZeit = millis();
   if  (merkerPower == true)
   {
 
-    if ((millis() - letzteZeit) > warteZeit)
+    if ((aktuelleZeit - letzteZeit) > warteZeit)
     {
       digitalWrite( led[zaehler], LOW);
       zaehler ++;
@@ -44,7 +44,7 @@ void loop()
         zaehler = 0;
       }
       digitalWrite( led[zaehler], HIGH);
-      letzteZeit = millis();
+      letzteZeit = aktuelleZeit;
     }
 
   }
