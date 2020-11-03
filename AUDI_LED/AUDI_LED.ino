@@ -17,10 +17,10 @@ bool merkerPower = false;
 
 void setup()
 {
-  /******Pinbelegung********/
+  
   for (byte i = 0; i < 8; i++)
   {
-    pinMode(led[i], OUTPUT);
+    pinMode(led[i], OUTPUT);                        //Pinbelegung 2-9 Output
   }
   taster.attachClick(Taster_Funktion);
   Serial.begin(9600);
@@ -31,24 +31,24 @@ void loop()
   taster.tick();
   delay(10);
   Serial.println(merkerPower);
-  unsigned long aktuelleZeit = millis();
+  unsigned long aktuelleZeit = millis();              //aktuelle Zeit setzten
   if  (merkerPower == true)
   {
 
-    if ((aktuelleZeit - letzteZeit) > warteZeit)
+    if ((aktuelleZeit - letzteZeit) > warteZeit)      //Zeitabfrage warte Zeit zwischen den durchgängen
     {
-      digitalWrite( led[zaehler], LOW);
+      digitalWrite( led[zaehler], LOW);               //vorherriger Pin wird ausgeschaltet
       zaehler ++;
-      if (zaehler == 8)
+      if (zaehler == 8)                               //nach 7 wechseln ist der durchgang vorbei und wird neu gestartet
       {
         zaehler = 0;
       }
-      digitalWrite( led[zaehler], HIGH);
-      letzteZeit = aktuelleZeit;
+      digitalWrite( led[zaehler], HIGH);              //nächster Pin wird eingeschaltet
+      letzteZeit = aktuelleZeit;                      //Zeit wird neu gesetzt
     }
 
   }
-  else
+  else                                                //Taster aus LEDs aus
   {
     for (int i = 0; i < 8; i++)
     {
@@ -58,7 +58,7 @@ void loop()
 }
 
 
-void Taster_Funktion()
+void Taster_Funktion()                                //merker wird Invertiert
 {
   merkerPower = !merkerPower;
 }
